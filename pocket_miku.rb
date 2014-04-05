@@ -16,20 +16,22 @@ Plugin.create(:pocket_miku) do
     sound_test_button.signal_connect('clicked') do
       # 調教的にキツい
       sing do
-        み(72,100) ; sleep 0.12
-        く(76,100) ; sleep 0.12
-        stop ; sleep 0.12
-        た(72,100) ; sleep 0.60
-        stop end
+        tempo 140
+        み key: 72, length: PocketMiku::Note16
+        く key: 76, length: PocketMiku::Note16
+        っ PocketMiku::Note8
+        た key: 72, length: PocketMiku::Note4
+      end
     end end
 
   on_favorite do |service, by, to|
     if UserConfig[:pocket_miku_fav_notification] and to.from_me?
       notify_thread.new do
         sing do
-          ふぁ(75,127); sleep 0.12
-          ぼ(82,127); sleep 0.12
-          stop  end end end end
+          tempo 140
+          ふぁ key: 75, length: PocketMiku::Note16
+          ぼ key: 82, length: PocketMiku::Note16
+        end end end end
 
   device_watcher = UserConfig.connect(:pocket_miku_device) do
     pocket_miku_reset end
@@ -52,7 +54,7 @@ Plugin.create(:pocket_miku) do
     return nil unless UserConfig[:pocket_miku_device]
     atomic do
       if not(@pocket_miku) or @pocket_miku.closed?
-        @pocket_miku = PocketMiku.new(UserConfig[:pocket_miku_device]) end end
+        @pocket_miku = PocketMiku::Device.new(UserConfig[:pocket_miku_device]) end end
     @pocket_miku
   rescue => exception
     error exception
