@@ -5,7 +5,7 @@ depends:
   plugin:
   - settings
   - gtk
-version: '1.0'
+version: '1.1'
 author: toshi_a
 name: ポケット・ミク for mikutter
 description:
